@@ -2,7 +2,9 @@
   <v-dialog v-model="dialog" persistent max-width="600px">
     <v-card>
       <v-card-title class="text-h5">
-        <div class="flex-grow-1">{{ editMode ? 'Editar Cliente' : 'Novo Cliente' }}</div>
+        <div class="flex-grow-1">
+          {{ editMode ? "Editar Cliente" : "Novo Cliente" }}
+        </div>
         <!-- Botão para fechar o diálogo -->
         <v-btn icon @click="closeDialog">
           <v-icon>mdi-close</v-icon>
@@ -38,20 +40,19 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class='save_edit-button' text @click="salvarCliente">
-          {{ editMode ? 'Atualizar' : 'Gravar' }}
+        <v-btn class="save_edit-button" text @click="salvarCliente">
+          {{ editMode ? "Atualizar" : "Gravar" }}
         </v-btn>
-        <v-btn class='cancel-button' text @click="closeDialog">Cancelar</v-btn>
+        <v-btn class="cancel-button" text @click="closeDialog">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-
 export default {
   props: {
-    clienteParaEditar: Object
+    clienteParaEditar: Object,
   },
   data() {
     return {
@@ -60,35 +61,40 @@ export default {
       editMode: false,
       cliente: this.getDefaultCliente(),
       nameRules: [
-        v => !!v || 'Nome é obrigatório',
-        v => (v && v.length >= 3) || 'Nome deve ter mais de 2 caracteres',
-        v => (v && v.length <= 50) || 'Nome deve ter menos de 50 caracteres'
+        (v) => !!v || "Nome é obrigatório",
+        (v) => (v && v.length >= 3) || "Nome deve ter mais de 2 caracteres",
+        (v) => (v && v.length <= 50) || "Nome deve ter menos de 50 caracteres",
       ],
       cpfCnpjRules: [
-        v => !!v || 'CPF/CNPJ é obrigatório',
-        v => (v && v.length >= 11 && v.length <= 14) || 'CPF/CNPJ deve ter entre 11 e 14 caracteres'
+        (v) => !!v || "CPF/CNPJ é obrigatório",
+        (v) =>
+          (v && v.length >= 11 && v.length <= 14) ||
+          "CPF/CNPJ deve ter entre 11 e 14 caracteres",
       ],
       emailRules: [
-        v => !!v || 'E-mail é obrigatório',
-        v => /.+@.+/.test(v) || 'E-mail deve ser válido',
+        (v) => !!v || "E-mail é obrigatório",
+        (v) => /.+@.+/.test(v) || "E-mail deve ser válido",
       ],
       telefoneRules: [
-        v => !!v || 'Telefone é obrigatório',
-        v => (v && v.length >= 8 && v.length <= 15) || 'Telefone deve ter entre 8 e 15 caracteres'
+        (v) => !!v || "Telefone é obrigatório",
+        (v) =>
+          (v && v.length >= 8 && v.length <= 15) ||
+          "Telefone deve ter entre 8 e 15 caracteres",
       ],
     };
   },
   methods: {
     salvarCliente() {
       if (this.$refs.form.validate()) {
-        const actionName = this.editMode ? 'updateCliente' : 'createCliente';
-        this.$store.dispatch(actionName, this.cliente)
+        const actionName = this.editMode ? "updateCliente" : "createCliente";
+        this.$store
+          .dispatch(actionName, this.cliente)
           .then(() => {
             this.closeDialog();
-            this.$emit('clienteAtualizado');
+            this.$emit("clienteAtualizado");
           })
-          .catch(error => {
-            console.error('Erro ao processar o cliente:', error);
+          .catch((error) => {
+            console.error("Erro ao processar o cliente:", error);
           });
       }
     },
@@ -114,13 +120,13 @@ export default {
     },
     getDefaultCliente() {
       return {
-        nome: '',
-        cpfOuCnpj: '',
-        email: '',
-        telefone: '',
-        dataCadastro: new Date().toISOString().substr(0, 10)
+        nome: "",
+        cpfOuCnpj: "",
+        email: "",
+        telefone: "",
+        dataCadastro: new Date().toISOString().substr(0, 10),
       };
-    }
+    },
   },
   watch: {
     clienteParaEditar(newValue) {
@@ -131,22 +137,21 @@ export default {
         this.editMode = false;
         this.resetForm();
       }
-    }
+    },
   },
   created() {
     if (this.clienteParaEditar) {
       this.cliente = { ...this.clienteParaEditar };
       this.editMode = true;
     }
-  }
+  },
 };
 </script>
 
 <style scoped>
-
 .cancel-button {
   border: 1px solid var(--tertiary-color);
-  color: var(--tertiary2-color);;
+  color: var(--tertiary2-color);
   background-color: transparent;
   text-transform: none;
   font-weight: normal;
@@ -170,4 +175,3 @@ export default {
   border-color: var(--secondary-color);
 }
 </style>
-

@@ -8,17 +8,17 @@ export default new Vuetify({
         dark: true,
         themes: {
             light: {
-                primary: 'f17ea1', // Laranja médio
-                secondary: '#ffc4d8', // Laranja mais escuro
-                tertiary: '#F0EAD6', // Bege claro
-                tertiary2: '#E5E5E5', // Cinza claro
-                white: '#FFFFFF'
+                primary: '#0366d6', // Cinza escuro, quase preto, para textos e cabeçalhos
+                secondary: '#586069', // Cinza médio, para textos secundários
+                tertiary: '#f6f8fa', // Cinza muito claro, para fundos e áreas de destaque
+                tertiary2: '#e1e4e8', // Cinza claro, para bordas e divisórias
+                white: '#FFFFFF' // Branco, mantido para contrastes e fundos
             },
             dark: {
-                primary: '#f17ea1', // Laranja médio
-                secondary: '#ffc4d8', // Laranja mais escuro
-                tertiary: '#F0EAD6', // Bege claro
-                tertiary2: '#E5E5E5', // Cinza claro
+                primary: '#0366d6', // Azul do GitHub, substituindo o verde claro
+                secondary: '#586069', // Cinza escuro, quase preto, para fundos
+                tertiary: '#586069', // Cinza médio, para textos secundários e elementos
+                tertiary2: '#e1e4e8', // Cinza claro, para bordas e divisórias em um fundo escuro
             }
         },
     },
