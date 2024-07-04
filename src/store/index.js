@@ -1,22 +1,17 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import actions from './actions';
+import mutations from './mutations';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    hospedes: [],
-    financas: [],
-    pagamentos: [],
-    lembretes: []
-  },
-  mutations: {
-    // Definir mutations
-  },
-  actions: {
-    // Definir ações
-  },
-  modules: {
-    // Dividir store em módulos
-  }
+    state: {
+        user: null,
+        token: null,
+        tarefas: [],
+        eventos: [],
+    },
+    mutations,
+    actions,
 });
