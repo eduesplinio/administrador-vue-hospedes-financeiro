@@ -1,4 +1,3 @@
-// src/router/index.js
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
@@ -15,7 +14,6 @@ const routes = [
   { path: '/financas', name: 'Financas', component: FinancasView },
   { path: '/pagamentos', name: 'Pagamentos', component: PagamentosView },
   { path: '/lembretes', name: 'Lembretes', component: LembretesView }
-
 ];
 
 const router = new VueRouter({
