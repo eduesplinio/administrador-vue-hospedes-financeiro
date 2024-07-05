@@ -26,8 +26,11 @@ module.exports = defineConfig({
     'vuetify'
   ],
   devServer: {
+    https: true,
     open: true,
-    server: true,
+    server: {
+      type: 'https',
+    },
     historyApiFallback: true,
   }
 });

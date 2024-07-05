@@ -1,8 +1,7 @@
 <template>
   <v-app>
     <!-- Barra de Navegação Superior -->
-    <v-app-bar app color="primary">
-      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+    <v-app-bar app color="">
       <v-spacer></v-spacer>
       <v-btn icon @click="toggleDarkTheme">
         <v-icon>{{
@@ -17,6 +16,9 @@
     <!-- Menu Lateral -->
     <v-navigation-drawer v-model="drawer" app>
       <v-list>
+        <v-list-item @click="toggleDrawer">
+          <v-icon>{{ drawer ? "mdi-menu-open" : "mdi-menu-close" }}</v-icon>
+        </v-list-item>
         <v-list-item
           :class="{ 'selected-item': isSelected('/') }"
           @click="navigateTo('/')"
@@ -169,7 +171,10 @@ export default {
 
 <style scoped>
 .my-drawer {
-  top: -10px !important;
+  margin-top: -10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .footer-content {
@@ -205,15 +210,15 @@ export default {
 
 /* Estilo para hover e item selecionado */
 .v-list-item {
-  transition: background-color 0.3s ease;
+  transition: none;
 }
 
 .v-list-item:hover {
-  background-color: var(--tertiary-color);
+  transition: none;
 }
 
 .selected-item {
-  background-color: #e0e0e0; /* Cor de fundo ao passar o mouse */
+  transition: none;
 }
 .v-list-item {
   transition: none; /* Desativa transições ao clicar */
