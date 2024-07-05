@@ -89,50 +89,6 @@
         ></v-img>
       </v-col>
     </v-footer>
-
-    <!-- Caixa de Diálogo de Feedback -->
-    <v-dialog v-model="dialog" max-width="600">
-      <v-card>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-title>
-            <span class="headline">Deixe seu Feedback sobre a Empresa!</span>
-          </v-card-title>
-          <v-card-text>
-            <v-text-field
-              v-model="titulo"
-              prepend-icon="mdi-rename-outline"
-              label="Título do Feedback"
-              :rules="[rules.required]"
-            ></v-text-field>
-            <v-textarea
-              v-model="conteudo"
-              prepend-icon="mdi-subtitles-outline"
-              label="Conteúdo do Feedback"
-              :rules="[rules.required]"
-            ></v-textarea>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="cancelFeedback"
-              >Cancelar</v-btn
-            >
-            <v-btn color="blue darken-1" text @click="submitFeedback"
-              >Enviar</v-btn
-            >
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
-
-    <!-- Snackbar para confirmação de feedback -->
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="3000"
-      class="centered-snackbar"
-      color="green"
-    >
-      Agradecemos o seu feedback!
-    </v-snackbar>
   </v-app>
 </template>
 
@@ -291,21 +247,24 @@ export default {
 
 /* Estilo para hover e item selecionado */
 .v-list-item {
-  transition: none;
+  transition: none !important;
 }
 
 .v-list-item:hover {
-  transition: none;
-}
-
-.selected-item {
-  transition: none;
-}
-.v-list-item {
-  transition: none; /* Desativa transições ao clicar */
+  transition: none !important;
 }
 
 .v-list-item-icon {
-  transition: none; /* Desativa transições ao clicar */
+  transition: none !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.v-list-item-title {
+  transition: none !important;
+}
+
+.selected-item {
+  transition: none !important;
 }
 </style>
