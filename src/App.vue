@@ -2,6 +2,7 @@
   <v-app>
     <!-- Barra de Navegação Superior -->
     <v-app-bar app color="">
+      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn icon @click="toggleDarkTheme">
         <v-icon>{{
@@ -9,15 +10,13 @@
         }}</v-icon>
       </v-btn>
       <v-btn icon @click="performLogout">
-@@ -15,56 +14,60 @@
+        <v-icon>mdi-logout</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <!-- Menu Lateral -->
     <v-navigation-drawer v-model="drawer" app>
       <v-list>
-        <v-list-item @click="toggleDrawer">
-          <v-icon>{{ drawer ? "mdi-menu-open" : "mdi-menu-close" }}</v-icon>
-        </v-list-item>
         <v-list-item
           :class="{ 'selected-item': isSelected('/') }"
           @click="navigateTo('/')"
@@ -70,14 +69,17 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-@@ -73,63 +76,6 @@
+
+    <!-- Conteúdo Principal -->
     <v-main>
       <router-view />
     </v-main>
   </v-app>
 </template>
 
-@@ -139,8 +85,7 @@ import { mapActions } from "vuex";
+<script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -85,7 +87,12 @@ export default {
       darkTheme: false,
       dialog: false,
       snackbar: false,
-@@ -153,7 +98,7 @@ export default {
+      titulo: "",
+      conteudo: "",
+      valid: false,
+      rules: {
+        required: (value) => !!value || "Campo obrigatório",
+      },
     };
   },
   created() {
@@ -93,14 +100,60 @@ export default {
   },
   computed: {
     currentYear() {
-@@ -179,7 +124,7 @@ export default {
+      return new Date().getFullYear();
+    },
+    isMobile() {
+      return this.$vuetify.breakpoint.xsOnly;
+    },
+    shouldShowNavBar() {
+      const isAuthenticated = !!localStorage.getItem("userToken");
+      const requiresAuth = this.$route.matched.some(
+        (record) => record.meta.requiresAuth
+      );
+      return isAuthenticated && requiresAuth;
+    },
+  },
+  watch: {
+    darkTheme(newVal) {
+      this.$vuetify.theme.dark = newVal;
+    },
+  },
+  methods: {
     ...mapActions(["loginUser", "logoutUser"]),
+
     toggleDrawer() {
       this.drawer = !this.drawer;
     },
     toggleDarkTheme() {
       this.darkTheme = !this.darkTheme;
-@@ -214,11 +159,24 @@ export default {
+    },
+    performLogout() {
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userInfo");
+      this.$router.push("/login");
+    },
+    goToHelpSite() {
+      window.open("https://unifeso.gitbook.io/orange-dragon", "_blank");
+    },
+    openFeedbackDialog() {
+      this.dialog = true;
+    },
+    cancelFeedback() {
+      this.dialog = false;
+      this.resetForm();
+    },
+    resetForm() {
+      this.$refs.form.reset();
+    },
+    submitFeedback() {
+      if (this.$refs.form.validate()) {
+        const feedback = {
+          titulo: this.titulo,
+          conteudo: this.conteudo,
+        };
+        console.log(feedback);
+        this.dialog = false;
+        this.snackbar = true;
         this.resetForm();
       }
     },
@@ -116,43 +169,57 @@ export default {
 
 <style scoped>
 .my-drawer {
-  margin-top: -10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  top: -10px !important;
 }
+
 .footer-content {
   font-size: 13px;
   height: 50px;
-@@ -227,26 +185,9 @@ export default {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   text-align: right;
   color: #f0ead6;
   position: relative;
 }
+
 .menu-button {
   font-weight: normal;
   text-transform: none;
-@@ -266,4 +207,27 @@ export default {
+  font-size: 15px;
+}
+
+.logo-image {
+  max-height: 300px;
+  max-width: 165px;
+  margin-left: 5px;
+}
+
+.v-app-bar {
+  justify-content: space-between;
+}
+
 .centered-snackbar {
   align-items: center;
 }
+
 /* Estilo para hover e item selecionado */
 .v-list-item {
-  transition: none !important;
+  transition: background-color 0.3s ease;
 }
+
 .v-list-item:hover {
-  transition: none !important;
+  background-color: var(--tertiary-color);
 }
-.v-list-item-icon {
-  transition: none !important;
-  align-items: center;
-  justify-content: center;
-}
-.v-list-item-title {
-  transition: none !important;
-}
+
 .selected-item {
-  transition: none !important;
+  background-color: #e0e0e0; /* Cor de fundo ao passar o mouse */
+}
+.v-list-item {
+  transition: none; /* Desativa transições ao clicar */
+}
+
+.v-list-item-icon {
+  transition: none; /* Desativa transições ao clicar */
 }
 </style>
