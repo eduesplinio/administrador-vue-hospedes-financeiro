@@ -4,8 +4,8 @@
 
     <v-row align="center">
       <v-col cols="12" sm="auto" class="d-flex align-items-center">
-        <v-icon color="primary" size="35">mdi-home-city</v-icon>
-        <h2 class="ml-2 mt-3 font-weight-normal primary--text">Flats</h2>
+        <v-icon class="mt-2" size="35">mdi-home-city</v-icon>
+        <h2 class="ml-3 mt-3 font-weight-normal">Flats</h2>
       </v-col>
     </v-row>
     <v-divider

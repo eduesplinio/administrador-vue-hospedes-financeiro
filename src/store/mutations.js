@@ -11,13 +11,22 @@ export default {
         state.token = null;
         state.user = null;
     },
-    ADICIONAR_TAREFA(state, novaTarefa) {
-        state.tarefas.push(novaTarefa);
+    SET_HOSPEDES(state, hospedes) {
+        Vue.set(state, 'hospedes', hospedes);
     },
-    setTarefas(state, tarefas) {
-        Vue.set(state, 'tarefas', tarefas);
+    ADD_HOSPEDE(state, hospede) {
+        state.hospedes.push(hospede);
+        localStorage.setItem('hospedes', JSON.stringify(state.hospedes));
     },
-    ADICIONAR_EVENTO(state, novoEvento) {
-        state.eventos.push(novoEvento);
+    UPDATE_HOSPEDE(state, updatedHospede) {
+        const index = state.hospedes.findIndex(h => h.id === updatedHospede.id);
+        if (index !== -1) {
+            Vue.set(state.hospedes, index, updatedHospede);
+            localStorage.setItem('hospedes', JSON.stringify(state.hospedes));
+        }
     },
-}
+    DELETE_HOSPEDE(state, hospedeId) {
+        state.hospedes = state.hospedes.filter(h => h.id !== hospedeId);
+        localStorage.setItem('hospedes', JSON.stringify(state.hospedes));
+    },
+};

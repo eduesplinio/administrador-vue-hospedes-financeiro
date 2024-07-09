@@ -4,10 +4,8 @@
 
     <v-row align="center">
       <v-col cols="12" sm="auto" class="d-flex align-items-center">
-        <v-icon color="primary" class="mt-2" size="35">mdi-hand-coin</v-icon>
-        <h2 class="ml-2 mt-3 font-weight-normal primary--text">
-          Receitas e Despesas
-        </h2>
+        <v-icon class="mt-2" size="35">mdi-currency-usd</v-icon>
+        <h2 class="ml-1 mt-3 font-weight-normal">Finanças</h2>
       </v-col>
     </v-row>
     <v-divider
