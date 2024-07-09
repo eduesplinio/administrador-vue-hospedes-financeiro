@@ -210,21 +210,24 @@ export default {
 
 /* Estilo para hover e item selecionado */
 .v-list-item {
-  transition: none;
+  transition: none !important;
 }
 
 .v-list-item:hover {
-  transition: none;
-}
-
-.selected-item {
-  transition: none;
-}
-.v-list-item {
-  transition: none; /* Desativa transições ao clicar */
+  transition: none !important;
 }
 
 .v-list-item-icon {
-  transition: none; /* Desativa transições ao clicar */
+  transition: none !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.v-list-item-title {
+  transition: none !important;
+}
+
+.selected-item {
+  transition: none !important;
 }
 </style>
