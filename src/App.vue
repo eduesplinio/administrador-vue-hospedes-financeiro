@@ -5,21 +5,15 @@
       <v-spacer></v-spacer>
       <v-btn icon @click="toggleDarkTheme">
         <v-icon>{{
-          darkTheme ? "mdi-weather-sunny" : "mdi-weather-night"
+          darkTheme ? "mdi-white-balance-sunny" : "mdi-weather-night"
         }}</v-icon>
       </v-btn>
       <v-btn icon @click="performLogout">
-        <v-icon>mdi-logout</v-icon>
-      </v-btn>
+@@ -15,56 +14,60 @@
     </v-app-bar>
 
     <!-- Menu Lateral -->
-    <v-navigation-drawer
-      app
-      :mini-variant="miniVariant"
-      :permanent="true"
-      class="my-drawer"
-    >
+    <v-navigation-drawer v-model="drawer" app>
       <v-list>
         <v-list-item @click="toggleDrawer">
           <v-icon>{{ drawer ? "mdi-menu-open" : "mdi-menu-close" }}</v-icon>
@@ -29,86 +23,69 @@
           @click="navigateTo('/')"
         >
           <v-list-item-icon>
-            <v-icon color="primary">mdi-home</v-icon>
+            <v-icon>mdi-chart-bar</v-icon>
           </v-list-item-icon>
-          <v-list-item-title v-if="!miniVariant">Principal</v-list-item-title>
+          <v-list-item-title v-if="drawer">Dashboard</v-list-item-title>
         </v-list-item>
         <v-list-item
           :class="{ 'selected-item': isSelected('/hospedes') }"
           @click="navigateTo('/hospedes')"
         >
           <v-list-item-icon>
-            <v-icon color="primary">mdi-account-group</v-icon>
+            <v-icon>mdi-account-group</v-icon>
           </v-list-item-icon>
-          <v-list-item-title v-if="!miniVariant">Hóspedes</v-list-item-title>
+          <v-list-item-title v-if="drawer">Hóspedes</v-list-item-title>
         </v-list-item>
         <v-list-item
           :class="{ 'selected-item': isSelected('/flats') }"
           @click="navigateTo('/flats')"
         >
           <v-list-item-icon>
-            <v-icon color="primary">mdi-home-city</v-icon>
+            <v-icon>mdi-home-city</v-icon>
           </v-list-item-icon>
-          <v-list-item-title v-if="!miniVariant">Flats</v-list-item-title>
+          <v-list-item-title v-if="drawer">Flats</v-list-item-title>
         </v-list-item>
-        <v-list-item
-          :class="{ 'selected-item': isSelected('/financas') }"
-          @click="navigateTo('/financas')"
-        >
+        <v-list-group prepend-icon="mdi-currency-usd" no-action>
+          <template v-slot:activator>
+            <v-list-item-title v-if="drawer">Finanças</v-list-item-title>
+            <v-list-item-icon v-else>
+              <v-icon>mdi-currency-usd</v-icon>
+            </v-list-item-icon>
+          </template>
+          <v-list-item link to="/financas/receitas-despesas">
+            <v-list-item-title>Receitas e Despesas</v-list-item-title>
+          </v-list-item>
+          <v-list-item link to="/financas/pagamento-funcionarios">
+            <v-list-item-title>Pagamentos</v-list-item-title>
+          </v-list-item>
+          <v-list-item link to="/financas/balanco">
+            <v-list-item-title>Balanço</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-item link to="/lembretes">
           <v-list-item-icon>
-            <v-icon color="primary">mdi-currency-usd</v-icon>
+            <v-icon>mdi-bell</v-icon>
           </v-list-item-icon>
-          <v-list-item-title v-if="!miniVariant">Finanças</v-list-item-title>
-        </v-list-item>
-        <v-list-item
-          :class="{ 'selected-item': isSelected('/lembretes') }"
-          @click="navigateTo('/lembretes')"
-        >
-          <v-list-item-icon>
-            <v-icon color="primary">mdi-bell</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title v-if="!miniVariant">Lembretes</v-list-item-title>
+          <v-list-item-title v-if="drawer">Lembretes</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
-    <!-- Conteúdo Principal -->
+@@ -73,63 +76,6 @@
     <v-main>
       <router-view />
     </v-main>
-
-    <!-- Rodapé -->
-    <v-footer padless fixed app>
-      <v-col class="footer-content" cols="12">
-        © {{ currentYear }} Direitos Reservados
-        <v-img
-          class="footer-logo"
-          src=""
-          max-height="100%"
-          max-width="20px"
-        ></v-img>
-      </v-col>
-    </v-footer>
   </v-app>
 </template>
 
-<script>
-import { mapActions } from "vuex";
-
+@@ -139,8 +85,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
       drawer: true,
-      miniVariant: false,
       darkTheme: false,
       dialog: false,
       snackbar: false,
-      titulo: "",
-      conteudo: "",
-      valid: false,
-      rules: {
-        required: (value) => !!value || "Campo obrigatório",
-      },
+@@ -153,7 +98,7 @@ export default {
     };
   },
   created() {
@@ -116,66 +93,14 @@ export default {
   },
   computed: {
     currentYear() {
-      return new Date().getFullYear();
-    },
-    isMobile() {
-      return this.$vuetify.breakpoint.xsOnly;
-    },
-    shouldShowNavBar() {
-      const isAuthenticated = !!localStorage.getItem("userToken");
-      const requiresAuth = this.$route.matched.some(
-        (record) => record.meta.requiresAuth
-      );
-      return isAuthenticated && requiresAuth;
-    },
-  },
-  watch: {
-    darkTheme(newVal) {
-      this.$vuetify.theme.dark = newVal;
-    },
-  },
-  methods: {
+@@ -179,7 +124,7 @@ export default {
     ...mapActions(["loginUser", "logoutUser"]),
-
     toggleDrawer() {
       this.drawer = !this.drawer;
-      this.miniVariant = !this.drawer;
-    },
-
-    closeDrawer() {
-      this.drawer = false;
-      this.miniVariant = true;
     },
     toggleDarkTheme() {
       this.darkTheme = !this.darkTheme;
-    },
-    performLogout() {
-      localStorage.removeItem("userToken");
-      localStorage.removeItem("userInfo");
-      this.$router.push("/login");
-    },
-    goToHelpSite() {
-      window.open("https://unifeso.gitbook.io/orange-dragon", "_blank");
-    },
-    openFeedbackDialog() {
-      this.dialog = true;
-    },
-    cancelFeedback() {
-      this.dialog = false;
-      this.resetForm();
-    },
-    resetForm() {
-      this.$refs.form.reset();
-    },
-    submitFeedback() {
-      if (this.$refs.form.validate()) {
-        const feedback = {
-          titulo: this.titulo,
-          conteudo: this.conteudo,
-        };
-        console.log(feedback);
-        this.dialog = false;
-        this.snackbar = true;
+@@ -214,11 +159,24 @@ export default {
         this.resetForm();
       }
     },
@@ -196,74 +121,37 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 }
-
 .footer-content {
   font-size: 13px;
   height: 50px;
-  display: flex;
-  align-items: center;
+@@ -227,26 +185,9 @@ export default {
   justify-content: space-between;
   text-align: right;
   color: #f0ead6;
-  background-color: var(--primary-color);
   position: relative;
 }
-
-.footer-content::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background-color: #f0ead6; /* Linha decorativa aplicada em ambos os temas */
-}
-
-.footer-logo {
-  height: auto;
-  max-width: 100px;
-  margin-left: auto;
-}
-
 .menu-button {
   font-weight: normal;
   text-transform: none;
-  font-size: 15px;
-}
-
-.logo-image {
-  max-height: 300px;
-  max-width: 165px;
-  margin-left: 5px;
-}
-
-.v-app-bar {
-  justify-content: space-between;
-}
-
+@@ -266,4 +207,27 @@ export default {
 .centered-snackbar {
   align-items: center;
 }
-
 /* Estilo para hover e item selecionado */
 .v-list-item {
   transition: none !important;
 }
-
 .v-list-item:hover {
   transition: none !important;
 }
-
 .v-list-item-icon {
   transition: none !important;
   align-items: center;
   justify-content: center;
 }
-
 .v-list-item-title {
   transition: none !important;
 }
-
 .selected-item {
   transition: none !important;
 }

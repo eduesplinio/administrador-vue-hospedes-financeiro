@@ -12,18 +12,22 @@ export default {
         commit('CLEAR_USER_DATA');
     },
 
-    criarEvento({ commit }, eventoData) {
-        commit('ADICIONAR_EVENTO', eventoData);
-    },
-    carregarTarefas({ commit }) {
-        const tarefasSalvas = localStorage.getItem('tarefas');
-        if (tarefasSalvas) {
-            commit('SET_TAREFAS', JSON.parse(tarefasSalvas));
+    fetchHospedes({ commit }) {
+        const hospedesSalvos = localStorage.getItem('hospedes');
+        if (hospedesSalvos) {
+            commit('SET_HOSPEDES', JSON.parse(hospedesSalvos));
         }
     },
-    adicionarTarefa({ commit, state }, novaTarefa) {
-        const tarefasAtualizadas = [...state.tarefas, novaTarefa];
-        localStorage.setItem('tarefas', JSON.stringify(tarefasAtualizadas));
-        commit('ADICIONAR_TAREFA', novaTarefa);
+
+    createHospede({ commit }, novoHospede) {
+        commit('ADD_HOSPEDE', novoHospede);
     },
-}
+
+    updateHospede({ commit }, updatedHospede) {
+        commit('UPDATE_HOSPEDE', updatedHospede);
+    },
+
+    deleteHospede({ commit }, hospedeId) {
+        commit('DELETE_HOSPEDE', hospedeId);
+    },
+};

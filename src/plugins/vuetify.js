@@ -5,21 +5,26 @@ Vue.use(Vuetify);
 
 export default new Vuetify({
     theme: {
-        dark: true,
+        dark: true, // Modo escuro ativado
         themes: {
             light: {
-                primary: '#0366d6', // Cinza escuro, quase preto, para textos e cabeçalhos
-                secondary: '#586069', // Cinza médio, para textos secundários
-                tertiary: '#f6f8fa', // Cinza muito claro, para fundos e áreas de destaque
-                tertiary2: '#e1e4e8', // Cinza claro, para bordas e divisórias
-                white: '#FFFFFF' // Branco, mantido para contrastes e fundos
+                primary: '#000000', // Azul primário
+                secondary: '#424242', // Cinza escuro
+                accent: '#82B1FF', // Azul claro
+                error: '#FF5252', // Vermelho
+                info: '#2196F3', // Azul
+                success: '#4CAF50', // Verde
+                warning: '#FFC107' // Amarelo
             },
             dark: {
-                primary: '#0366d6', // Azul do GitHub, substituindo o verde claro
-                secondary: '#586069', // Cinza escuro, quase preto, para fundos
-                tertiary: '#586069', // Cinza médio, para textos secundários e elementos
-                tertiary2: '#e1e4e8', // Cinza claro, para bordas e divisórias em um fundo escuro
-            }
+                primary: '#2196F3', // Azul primário
+                secondary: '#424242', // Cinza escuro
+                accent: '#82B1FF', // Azul claro
+                error: '#FF5252', // Vermelho
+                info: '#2196F3', // Azul
+                success: '#4CAF50', // Verde
+                warning: '#FFC107' // Amarelo
+            },
         },
     },
 });

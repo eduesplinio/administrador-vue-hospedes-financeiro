@@ -4,9 +4,7 @@
 
     <v-row align="center">
       <v-col cols="12" sm="auto" class="d-flex align-items-center">
-        <v-icon color="primary" class="mt-20" size="40"
-          >mdi-calendar-today</v-icon
-        >
+        <v-icon class="mt-20" size="40">mdi-calendar-today</v-icon>
         <h2 class="ml-2 mt-3 font-weight-normal primary--text">
           Agendar Evento
         </h2>

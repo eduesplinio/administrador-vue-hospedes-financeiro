@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HomeView from '@/views/HomeView.vue';
-import ClientTable from '@/components/clients/ClientTable.vue';
-import ClientManager from '@/views/ClientManager.vue';
+import DashboardView from '@/views/DashboardView.vue';
+import HospedesTable from '@/components/clients/HospedesTable.vue';
+import HospedeManager from '@/views/HospedeManager.vue';
 import ProductTable from '@/components/products/ProductTable.vue';
 import NotFoundComponents from '@/views/NotFoundComponents.vue';
 import MinhasTarefas from '@/views/MinhasTarefas.vue';
@@ -10,10 +10,11 @@ import MeusAgendamentos from '@/views/MeusAgendamentos.vue';
 import ForumEmpresa from '@/views/ForumEmpresa.vue';
 import FeedbackEmpresa from '@/views/FeedbackEmpresa.vue';
 import FinancasView from '@/views/FinancasView.vue';
-import HospedesView from '@/views/HospedesView.vue';
 import PagamentosView from '@/views/PagamentosView.vue';
 import LembretesView from '@/views/LembretesView.vue';
 import FlatsView from '@/views/FlatsView.vue';
+import ReceitasDespesasView from '@/views/ReceitasDespesasView.vue';
+import BalancoView from '@/views/BalancoView.vue';
 // import LoginUser from '@/views/LoginUser.vue';
 
 
@@ -35,28 +36,36 @@ const router = new Router({
         // },
         {
             path: '/',
-            name: 'homeView',
-            component: HomeView,
+            name: 'dashboardView',
+            component: DashboardView,
         },
         {
             path: '/financas',
             name: 'financas',
             component: FinancasView,
         },
+
         {
-            path: '/hospedes',
-            name: 'hospedes',
-            component: HospedesView,
+            path: '/financas/receitas-despesas',
+            name: 'receitas-despesas',
+            component: ReceitasDespesasView,
+        },
+
+        {
+            path: '/financas/balanco',
+            name: 'balanco',
+            component: BalancoView,
+        },
+
+        {
+            path: '/financas/pagamento-funcionarios',
+            name: 'pagamentos',
+            component: PagamentosView,
         },
         {
             path: '/lembretes',
             name: 'lembretes',
             component: LembretesView,
-        },
-        {
-            path: '/pagamentos',
-            name: 'pagamentos',
-            component: PagamentosView,
         },
         {
             path: '/flats',
@@ -84,14 +93,14 @@ const router = new Router({
             component: ForumEmpresa,
         },
         {
-            path: '/clientes',
-            name: 'Clientes',
-            component: ClientTable,
+            path: '/hospedes',
+            name: 'Hospedes',
+            component: HospedesTable,
         },
         {
-            path: '/gerenciar-clientes',
-            name: 'clientManager',
-            component: ClientManager,
+            path: '/gerenciar-hospedes',
+            name: 'HospedeManager',
+            component: HospedeManager,
         },
         {
             path: '/produtos',

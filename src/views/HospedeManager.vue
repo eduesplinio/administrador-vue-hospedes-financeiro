@@ -3,9 +3,8 @@
     <v-card>
       <v-card-title class="text-h5">
         <div class="flex-grow-1">
-          {{ editMode ? "Editar Cliente" : "Novo Cliente" }}
+          {{ editMode ? "Editar Hóspede" : "Novo Hóspede" }}
         </div>
-        <!-- Botão para fechar o diálogo -->
         <v-btn icon @click="closeDialog">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -13,34 +12,47 @@
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
-            v-model="cliente.nome"
+            v-model="hospede.nome"
             :rules="nameRules"
             label="Nome"
             required
           ></v-text-field>
           <v-text-field
-            v-model="cliente.cpfOuCnpj"
+            v-model="hospede.cpfOuCnpj"
             :rules="cpfCnpjRules"
             label="CPF/CNPJ"
             required
           ></v-text-field>
           <v-text-field
-            v-model="cliente.email"
+            v-model="hospede.email"
             :rules="emailRules"
             label="Email"
             required
           ></v-text-field>
           <v-text-field
-            v-model="cliente.telefone"
+            v-model="hospede.telefone"
             :rules="telefoneRules"
             label="Telefone"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="hospede.dataCheckIn"
+            label="Data de Check-in"
+            type="date"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-model="hospede.dataCheckOut"
+            label="Data de Check-out"
+            type="date"
             required
           ></v-text-field>
         </v-form>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="save_edit-button" text @click="salvarCliente">
+        <v-btn class="save_edit-button" text @click="salvarHospede">
           {{ editMode ? "Atualizar" : "Gravar" }}
         </v-btn>
         <v-btn class="cancel-button" text @click="closeDialog">Cancelar</v-btn>
@@ -52,14 +64,14 @@
 <script>
 export default {
   props: {
-    clienteParaEditar: Object,
+    hospedeParaEditar: Object,
   },
   data() {
     return {
       dialog: false,
       valid: false,
       editMode: false,
-      cliente: this.getDefaultCliente(),
+      hospede: this.getDefaultHospede(),
       nameRules: [
         (v) => !!v || "Nome é obrigatório",
         (v) => (v && v.length >= 3) || "Nome deve ter mais de 2 caracteres",
@@ -84,17 +96,17 @@ export default {
     };
   },
   methods: {
-    salvarCliente() {
+    salvarHospede() {
       if (this.$refs.form.validate()) {
-        const actionName = this.editMode ? "updateCliente" : "createCliente";
+        const actionName = this.editMode ? "updateHospede" : "createHospede";
         this.$store
-          .dispatch(actionName, this.cliente)
+          .dispatch(actionName, this.hospede)
           .then(() => {
             this.closeDialog();
-            this.$emit("clienteAtualizado");
+            this.$emit("hospedeAtualizado");
           })
           .catch((error) => {
-            console.error("Erro ao processar o cliente:", error);
+            console.error("Erro ao processar o hóspede:", error);
           });
       }
     },
@@ -106,32 +118,35 @@ export default {
       if (this.$refs.form) {
         this.$refs.form.resetValidation();
       }
-      this.cliente = this.getDefaultCliente();
+      this.hospede = this.getDefaultHospede();
       this.valid = false;
     },
     openDialog(edit = false) {
       this.editMode = edit;
       this.dialog = true;
-      if (edit && this.clienteParaEditar) {
-        this.cliente = { ...this.clienteParaEditar };
+      if (edit && this.hospedeParaEditar) {
+        this.hospede = { ...this.hospedeParaEditar };
       } else {
-        this.cliente = this.getDefaultCliente();
+        this.hospede = this.getDefaultHospede();
       }
     },
-    getDefaultCliente() {
+    getDefaultHospede() {
       return {
         nome: "",
         cpfOuCnpj: "",
         email: "",
         telefone: "",
+        checkStatus: "Check-in",
         dataCadastro: new Date().toISOString().substr(0, 10),
+        dataCheckIn: new Date().toISOString().substr(0, 10),
+        dataCheckOut: "",
       };
     },
   },
   watch: {
-    clienteParaEditar(newValue) {
+    hospedeParaEditar(newValue) {
       if (newValue) {
-        this.cliente = { ...newValue };
+        this.hospede = { ...newValue };
         this.editMode = true;
       } else {
         this.editMode = false;
@@ -140,38 +155,12 @@ export default {
     },
   },
   created() {
-    if (this.clienteParaEditar) {
-      this.cliente = { ...this.clienteParaEditar };
+    if (this.hospedeParaEditar) {
+      this.hospede = { ...this.hospedeParaEditar };
       this.editMode = true;
     }
   },
 };
 </script>
 
-<style scoped>
-.cancel-button {
-  border: 1px solid var(--tertiary-color);
-  color: var(--tertiary2-color);
-  background-color: transparent;
-  text-transform: none;
-  font-weight: normal;
-}
-.save_edit-button {
-  border: 1px solid var(--primary-color);
-  color: var(--white-color);
-  background-color: var(--primary-color);
-  text-transform: none;
-  font-weight: normal;
-}
-
-.save_edit-button:hover {
-  background-color: var(--secondary-color);
-  border-color: var(--secondary-color);
-  color: var(--white-color);
-}
-
-.save_edit-button:active {
-  background-color: var(--secondary-color);
-  border-color: var(--secondary-color);
-}
-</style>
+<style scoped></style>

@@ -4,8 +4,8 @@
 
     <v-row align="center">
       <v-col cols="12" sm="auto" class="d-flex align-items-center">
-        <v-icon class="mt-2" size="35">mdi-bell</v-icon>
-        <h2 class="ml-2 mt-3 font-weight-normal">Lembretes</h2>
+        <v-icon class="mt-2" size="40">mdi-scale-balance</v-icon>
+        <h2 class="ml-2 mt-3 font-weight-normal">Balanço</h2>
       </v-col>
     </v-row>
     <v-divider

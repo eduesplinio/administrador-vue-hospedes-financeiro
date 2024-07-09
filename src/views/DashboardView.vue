@@ -4,8 +4,8 @@
 
     <v-row align="center">
       <v-col cols="12" sm="auto" class="d-flex align-items-center">
-        <v-icon class="mt-2" size="35">mdi-bell</v-icon>
-        <h2 class="ml-2 mt-3 font-weight-normal">Lembretes</h2>
+        <v-icon class="mt-2" size="40">mdi-chart-bar</v-icon>
+        <h2 class="ml-2 mt-3 font-weight-normal">Dashboard</h2>
       </v-col>
     </v-row>
     <v-divider
@@ -21,7 +21,7 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      isDesktop: window.innerWidth > 600,
+      isDesktop: window.innerWidth > 800,
     };
   },
   computed: {
@@ -48,7 +48,7 @@ export default {
         });
     },
     checkWidth() {
-      this.isDesktop = window.innerWidth > 600;
+      this.isDesktop = window.innerWidth > 800;
     },
   },
 };
@@ -57,5 +57,20 @@ export default {
 <style scoped>
 .font-weight-normal {
   font-weight: normal;
+}
+.media-container {
+  text-align: center;
+  width: 100%;
+  height: 110%;
+  justify-content: center;
+}
+.video-responsive,
+.image-responsive {
+  width: 80%;
+  height: auto;
+  display: inline-block;
+}
+.no-interaction {
+  pointer-events: none;
 }
 </style>
