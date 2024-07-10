@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- Barra de Navegação Superior -->
-    <v-app-bar app color="">
+    <v-app-bar app>
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn icon @click="toggleDarkTheme">
@@ -61,6 +61,12 @@
             <v-list-item-title>Balanço</v-list-item-title>
           </v-list-item>
         </v-list-group>
+        <v-list-item link to="/relatorios">
+          <v-list-item-icon>
+            <v-icon>mdi-file-document</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title v-if="drawer">Relatórios</v-list-item-title>
+        </v-list-item>
         <v-list-item link to="/lembretes">
           <v-list-item-icon>
             <v-icon>mdi-bell</v-icon>
@@ -172,17 +178,6 @@ export default {
   top: -10px !important;
 }
 
-.footer-content {
-  font-size: 13px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-align: right;
-  color: #f0ead6;
-  position: relative;
-}
-
 .menu-button {
   font-weight: normal;
   text-transform: none;
@@ -201,25 +196,5 @@ export default {
 
 .centered-snackbar {
   align-items: center;
-}
-
-/* Estilo para hover e item selecionado */
-.v-list-item {
-  transition: background-color 0.3s ease;
-}
-
-.v-list-item:hover {
-  background-color: var(--tertiary-color);
-}
-
-.selected-item {
-  background-color: #e0e0e0; /* Cor de fundo ao passar o mouse */
-}
-.v-list-item {
-  transition: none; /* Desativa transições ao clicar */
-}
-
-.v-list-item-icon {
-  transition: none; /* Desativa transições ao clicar */
 }
 </style>

@@ -15,6 +15,7 @@ import LembretesView from '@/views/LembretesView.vue';
 import FlatsView from '@/views/FlatsView.vue';
 import ReceitasDespesasView from '@/views/ReceitasDespesasView.vue';
 import BalancoView from '@/views/BalancoView.vue';
+import RelatoriosView from '@/views/RelatoriosView.vue';
 // import LoginUser from '@/views/LoginUser.vue';
 
 
@@ -101,6 +102,11 @@ const router = new Router({
             path: '/gerenciar-hospedes',
             name: 'HospedeManager',
             component: HospedeManager,
+        },
+        {
+            path: '/relatorios',
+            name: 'Relatorios',
+            component: RelatoriosView,
         },
         {
             path: '/produtos',
