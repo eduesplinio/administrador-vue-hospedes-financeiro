@@ -114,7 +114,7 @@ export default {
     shouldShowNavBar() {
       const isAuthenticated = !!localStorage.getItem("userToken");
       const requiresAuth = this.$route.matched.some(
-        (record) => record.meta.requiresAuth
+        (record) => record.meta.requiresAuth,
       );
       return isAuthenticated && requiresAuth;
     },

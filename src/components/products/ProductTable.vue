@@ -2,7 +2,6 @@
   <v-row justify="center">
     <v-col cols="12" md="10" lg="12">
       <v-container>
-
         <!-- Espaçamento no topo -->
         <div class="mt-5"></div>
 
@@ -15,32 +14,56 @@
         </v-row>
 
         <!-- Linha horizontal personalizada -->
-        <v-divider class="my-3" :style="{ 'backgroundColor': 'tertiary' }"></v-divider>
+        <v-divider
+          class="my-3"
+          :style="{ backgroundColor: 'tertiary' }"
+        ></v-divider>
 
         <!-- Botão de Novo Produto -->
-        <v-btn class="action-button mb-7 mt-5" color="primary" @click="openNewProductDialog">
+        <v-btn
+          class="action-button mb-7 mt-5"
+          color="primary"
+          @click="openNewProductDialog"
+        >
           Novo Produto
         </v-btn>
         <product-manager ref="productManager"></product-manager>
 
         <!-- Tabela de Produtos -->
-        <v-data-table :headers="headers" :items="produtos" :loading="loading" class="elevation-1" mobile-breakpoint="500"
-          dense>
+        <v-data-table
+          :headers="headers"
+          :items="produtos"
+          :loading="loading"
+          class="elevation-1"
+          mobile-breakpoint="500"
+          dense
+        >
           <template v-slot:item="{ item }">
             <tr>
               <td>{{ item.id }}</td>
               <td>{{ item.nome }}</td>
               <!-- Ocultar algumas colunas em telas pequenas -->
-              <td class="d-none d-md-table-cell">{{ item.valor | currency }}</td>
-              <td class="d-none d-md-table-cell">{{ item.quantidadeEstoque }}</td>
+              <td class="d-none d-md-table-cell">
+                {{ item.valor | currency }}
+              </td>
+              <td class="d-none d-md-table-cell">
+                {{ item.quantidadeEstoque }}
+              </td>
               <td class="d-none d-md-table-cell">{{ item.observacao }}</td>
-              <td class="d-none d-md-table-cell">{{ item.dataCadastro | formatDate }}</td>
+              <td class="d-none d-md-table-cell">
+                {{ item.dataCadastro | formatDate }}
+              </td>
               <td>
                 <!-- Ícones de editar e excluir com alinhamento horizontal -->
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on" @click="editarProduto(item)">
-                      <v-icon color='primary'>mdi-pencil-outline</v-icon>
+                    <v-btn
+                      icon
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="editarProduto(item)"
+                    >
+                      <v-icon color="primary">mdi-pencil-outline</v-icon>
                     </v-btn>
                   </template>
                   <span>Editar Produto</span>
@@ -48,8 +71,13 @@
 
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on" @click="openDeleteDialog(item)">
-                      <v-icon color='primary'>mdi-delete-outline</v-icon>
+                    <v-btn
+                      icon
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="openDeleteDialog(item)"
+                    >
+                      <v-icon color="primary">mdi-delete-outline</v-icon>
                     </v-btn>
                   </template>
                   <span>Excluir Produto</span>
@@ -70,12 +98,18 @@
               </v-btn>
             </v-card-title>
             <v-card-text>
-              Você tem certeza que deseja excluir o produto <strong>{{ selectedProduto?.nome }}</strong>?
+              Você tem certeza que deseja excluir o produto
+              <strong>{{ selectedProduto?.nome }}</strong
+              >?
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn class='delete-button' text @click="deletarProduto">Excluir Produto</v-btn>
-              <v-btn class='cancel-button' text @click="closeDeleteDialog">Cancelar</v-btn>
+              <v-btn class="delete-button" text @click="deletarProduto"
+                >Excluir Produto</v-btn
+              >
+              <v-btn class="cancel-button" text @click="closeDeleteDialog"
+                >Cancelar</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -83,14 +117,14 @@
     </v-col>
   </v-row>
 </template>
-  
+
 <script>
-import { mapActions, mapState } from 'vuex';
-import ProductManager from '@/views/ProductManager.vue';
+import { mapActions, mapState } from "vuex";
+import ProductManager from "@/views/ProductManager.vue";
 
 export default {
   components: {
-    ProductManager
+    ProductManager,
   },
   data() {
     return {
@@ -98,21 +132,21 @@ export default {
       selectedProduto: null,
       loading: false,
       headers: [
-        { text: 'ID', value: 'id' },
-        { text: 'Nome', value: 'nome' },
-        { text: 'Valor', value: 'valor' },
-        { text: 'Estoque', value: 'quantidadeEstoque' },
-        { text: 'Observação', value: 'observacao' },
-        { text: 'Data de Cadastro', value: 'dataCadastro', sortable: false },
-        { text: 'Ações', value: 'actions', sortable: false },
+        { text: "ID", value: "id" },
+        { text: "Nome", value: "nome" },
+        { text: "Valor", value: "valor" },
+        { text: "Estoque", value: "quantidadeEstoque" },
+        { text: "Observação", value: "observacao" },
+        { text: "Data de Cadastro", value: "dataCadastro", sortable: false },
+        { text: "Ações", value: "actions", sortable: false },
       ],
     };
   },
   computed: {
-    ...mapState(['produtos']),
+    ...mapState(["produtos"]),
   },
   methods: {
-    ...mapActions(['fetchProdutos', 'deleteProduto']),
+    ...mapActions(["fetchProdutos", "deleteProduto"]),
     openNewProductDialog() {
       this.$refs.productManager.openDialog();
     },
@@ -137,34 +171,37 @@ export default {
           .then(() => {
             this.closeDeleteDialog();
           })
-          .catch(error => {
-            console.error('Erro ao excluir o produto:', error);
+          .catch((error) => {
+            console.error("Erro ao excluir o produto:", error);
             if (error.response && error.response.status === 401) {
-              this.$router.push('/login');
-              alert('Sessão expirada, por favor faça login novamente.');
+              this.$router.push("/login");
+              alert("Sessão expirada, por favor faça login novamente.");
             } else {
-              alert('Erro ao excluir o produto. Por favor, tente novamente.');
+              alert("Erro ao excluir o produto. Por favor, tente novamente.");
             }
           })
           .finally(() => {
             this.loading = false;
           });
       }
-    }
+    },
   },
   filters: {
     formatDate(value) {
       if (value) {
-        return new Intl.DateTimeFormat('pt-BR').format(new Date(value));
+        return new Intl.DateTimeFormat("pt-BR").format(new Date(value));
       }
-      return '';
+      return "";
     },
     currency(value) {
       if (value != null) {
         const numberValue = Number(value); // Converte a entrada para um número
-        return numberValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        return numberValue.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
       }
-      return '';
+      return "";
     },
   },
   created() {
@@ -172,7 +209,7 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 .action-button {
   text-transform: none;

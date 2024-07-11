@@ -2,7 +2,9 @@
   <v-dialog v-model="dialog" persistent max-width="600px">
     <v-card>
       <v-card-title class="text-h5">
-        <div class="flex-grow-1">{{ editMode ? 'Editar Produto' : 'Novo Produto' }}</div>
+        <div class="flex-grow-1">
+          {{ editMode ? "Editar Produto" : "Novo Produto" }}
+        </div>
         <!-- Botão para fechar o diálogo -->
         <v-btn icon @click="closeDialog">
           <v-icon>mdi-close</v-icon>
@@ -42,10 +44,10 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class='save_edit-button' text @click="salvarProduto">
-          {{ editMode ? 'Atualizar' : 'Gravar' }}
+        <v-btn class="save_edit-button" text @click="salvarProduto">
+          {{ editMode ? "Atualizar" : "Gravar" }}
         </v-btn>
-        <v-btn class='cancel-button' text @click="closeDialog">Cancelar</v-btn>
+        <v-btn class="cancel-button" text @click="closeDialog">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -54,7 +56,7 @@
 <script>
 export default {
   props: {
-    produtoParaEditar: Object
+    produtoParaEditar: Object,
   },
   data() {
     return {
@@ -63,31 +65,32 @@ export default {
       editMode: false,
       produto: this.getDefaultProduto(),
       nameRules: [
-        v => !!v || 'Nome é obrigatório',
-        v => (v && v.length >= 3) || 'Nome deve ter mais de 2 caracteres',
-        v => (v && v.length <= 50) || 'Nome deve ter menos de 50 caracteres'
+        (v) => !!v || "Nome é obrigatório",
+        (v) => (v && v.length >= 3) || "Nome deve ter mais de 2 caracteres",
+        (v) => (v && v.length <= 50) || "Nome deve ter menos de 50 caracteres",
       ],
       valueRules: [
-        v => !!v || 'Valor é obrigatório',
-        v => (v && v > 0) || 'Valor deve ser maior que 0'
+        (v) => !!v || "Valor é obrigatório",
+        (v) => (v && v > 0) || "Valor deve ser maior que 0",
       ],
       stockRules: [
-        v => !!v || 'Quantidade em estoque é obrigatória',
-        v => (v && v >= 0) || 'Quantidade em estoque não pode ser negativa'
+        (v) => !!v || "Quantidade em estoque é obrigatória",
+        (v) => (v && v >= 0) || "Quantidade em estoque não pode ser negativa",
       ],
     };
   },
   methods: {
     salvarProduto() {
       if (this.$refs.form.validate()) {
-        const actionName = this.editMode ? 'updateProduto' : 'createProduto';
-        this.$store.dispatch(actionName, this.produto)
+        const actionName = this.editMode ? "updateProduto" : "createProduto";
+        this.$store
+          .dispatch(actionName, this.produto)
           .then(() => {
             this.closeDialog();
-            this.$emit('produtoAtualizado');
+            this.$emit("produtoAtualizado");
           })
-          .catch(error => {
-            console.error('Erro ao processar o produto:', error);
+          .catch((error) => {
+            console.error("Erro ao processar o produto:", error);
           });
       }
     },
@@ -113,13 +116,13 @@ export default {
     },
     getDefaultProduto() {
       return {
-        nome: '',
+        nome: "",
         valor: 0,
         quantidadeEstoque: 0,
-        observacao: '',
-        dataCadastro: new Date().toISOString().substr(0, 10)
+        observacao: "",
+        dataCadastro: new Date().toISOString().substr(0, 10),
       };
-    }
+    },
   },
   watch: {
     produtoParaEditar(newValue) {
@@ -130,19 +133,18 @@ export default {
         this.editMode = false;
         this.resetForm();
       }
-    }
+    },
   },
   created() {
     if (this.produtoParaEditar) {
       this.produto = { ...this.produtoParaEditar };
       this.editMode = true;
     }
-  }
+  },
 };
 </script>
 
 <style scoped>
-
 .cancel-button {
   border: 1px solid var(--tertiary-color);
   color: var(--tertiary2-color);

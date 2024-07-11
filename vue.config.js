@@ -19,18 +19,16 @@
 //   }
 // });
 
-const { defineConfig } = require('@vue/cli-service');
+const { defineConfig } = require("@vue/cli-service");
 
 module.exports = defineConfig({
-  transpileDependencies: [
-    'vuetify'
-  ],
+  transpileDependencies: ["vuetify"],
   devServer: {
     https: true,
     open: true,
     server: {
-      type: 'https',
+      type: "https",
     },
     historyApiFallback: true,
-  }
+  },
 });
