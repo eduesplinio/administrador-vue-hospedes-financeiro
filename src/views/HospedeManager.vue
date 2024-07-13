@@ -12,6 +12,13 @@
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
+            v-model="hospede.id"
+            :rules="idRules"
+            label="ID"
+            required
+            disabled
+          ></v-text-field>
+          <v-text-field
             v-model="hospede.nome"
             :rules="nameRules"
             label="Nome"
@@ -41,7 +48,6 @@
             type="date"
             required
           ></v-text-field>
-
           <v-text-field
             v-model="hospede.dataCheckOut"
             label="Data de Check-out"
@@ -72,6 +78,11 @@ export default {
       valid: false,
       editMode: false,
       hospede: this.getDefaultHospede(),
+      idRules: [
+        (v) =>
+          /^\d{1,3}$/.test(v) ||
+          "O ID deve conter de 1 a 3 dígitos e ser numérico",
+      ],
       nameRules: [
         (v) => !!v || "Nome é obrigatório",
         (v) => (v && v.length >= 3) || "Nome deve ter mais de 2 caracteres",
@@ -128,10 +139,12 @@ export default {
         this.hospede = { ...this.hospedeParaEditar };
       } else {
         this.hospede = this.getDefaultHospede();
+        this.setNextId(); // Define o próximo ID ao abrir para novo cadastro
       }
     },
     getDefaultHospede() {
       return {
+        id: null,
         nome: "",
         cpfOuCnpj: "",
         email: "",
@@ -141,6 +154,17 @@ export default {
         dataCheckIn: new Date().toISOString().substr(0, 10),
         dataCheckOut: "",
       };
+    },
+    setNextId() {
+      // Lógica para determinar o próximo ID disponível
+      let nextId = 1; // Começa com 1 se nenhum hóspede cadastrado ainda
+      if (this.$store.state.hospedes.length > 0) {
+        const maxId = Math.max(
+          ...this.$store.state.hospedes.map((h) => parseInt(h.id)),
+        );
+        nextId = maxId + 1;
+      }
+      this.hospede.id = nextId.toString().padStart(2, "0"); // Formata para dois dígitos
     },
   },
   watch: {
@@ -158,6 +182,8 @@ export default {
     if (this.hospedeParaEditar) {
       this.hospede = { ...this.hospedeParaEditar };
       this.editMode = true;
+    } else {
+      this.setNextId(); // Define o próximo ID ao criar o componente para novo cadastro
     }
   },
 };

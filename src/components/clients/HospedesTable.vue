@@ -166,7 +166,7 @@ export default {
         this.deleteHospede(this.selectedHospede.id)
           .then(() => {
             this.closeDeleteDialog();
-            this.fetchHospedes(); // Atualiza a lista de hóspedes após exclusão
+            this.fetchHospedes();
           })
           .catch((error) => {
             console.error("Erro ao excluir o hóspede:", error);
@@ -188,7 +188,6 @@ export default {
       if (this.$refs.hospedeManager.$refs.form.validate()) {
         const hospedeData = { ...this.$refs.hospedeManager.hospede };
 
-        // Ajustando as datas para considerar o fuso horário corretamente
         hospedeData.dataCheckIn = new Date(hospedeData.dataCheckIn)
           .toISOString()
           .substr(0, 10);
@@ -198,11 +197,10 @@ export default {
 
         // Atribuir ID se necessário
         if (!hospedeData.id) {
-          hospedeData.id = Date.now(); // Pode substituir por qualquer lógica de geração de ID
+          hospedeData.id = Date.now();
         }
 
         if (this.$refs.hospedeManager.editMode) {
-          // Editando um hóspede existente
           this.updateHospede(hospedeData)
             .then(() => {
               this.$refs.hospedeManager.closeDialog();
@@ -227,7 +225,9 @@ export default {
   filters: {
     formatDate(value) {
       if (value) {
-        return new Intl.DateTimeFormat("pt-BR").format(new Date(value));
+        const date = new Date(value);
+        date.setDate(date.getDate() + 1); // Adiciona 1 dia à data
+        return new Intl.DateTimeFormat("pt-BR").format(date);
       }
     },
   },
