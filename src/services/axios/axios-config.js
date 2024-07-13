@@ -2,7 +2,7 @@ import axios from "axios";
 import router from "../../router/index.js";
 
 const api = axios.create({
-  baseURL: "http://localhost:3400",
+  baseURL: "",
 });
 
 // Interceptador de requisições

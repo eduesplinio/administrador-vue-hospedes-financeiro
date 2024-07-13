@@ -127,9 +127,9 @@ export default {
         { text: "CPF/CNPJ", value: "cpfOuCnpj" },
         { text: "Email", value: "email" },
         { text: "Telefone", value: "telefone" },
-        { text: "Check-in", value: "dataCheckIn", sortable: false },
-        { text: "Check-out", value: "dataCheckOut", sortable: false },
-        { text: "Ações", value: "actions", sortable: false },
+        { text: "Check-in", value: "dataCheckIn" },
+        { text: "Check-out", value: "dataCheckOut" },
+        { text: "Ações", value: "actions" },
       ],
     };
   },
@@ -156,7 +156,6 @@ export default {
       this.selectedHospede = hospede;
       this.deleteDialog = true;
     },
-
     closeDeleteDialog() {
       this.deleteDialog = false;
       this.selectedHospede = null;
@@ -167,6 +166,7 @@ export default {
         this.deleteHospede(this.selectedHospede.id)
           .then(() => {
             this.closeDeleteDialog();
+            this.fetchHospedes(); // Atualiza a lista de hóspedes após exclusão
           })
           .catch((error) => {
             console.error("Erro ao excluir o hóspede:", error);
@@ -187,6 +187,20 @@ export default {
     salvarHospede() {
       if (this.$refs.hospedeManager.$refs.form.validate()) {
         const hospedeData = { ...this.$refs.hospedeManager.hospede };
+
+        // Ajustando as datas para considerar o fuso horário corretamente
+        hospedeData.dataCheckIn = new Date(hospedeData.dataCheckIn)
+          .toISOString()
+          .substr(0, 10);
+        hospedeData.dataCheckOut = new Date(hospedeData.dataCheckOut)
+          .toISOString()
+          .substr(0, 10);
+
+        // Atribuir ID se necessário
+        if (!hospedeData.id) {
+          hospedeData.id = Date.now(); // Pode substituir por qualquer lógica de geração de ID
+        }
+
         if (this.$refs.hospedeManager.editMode) {
           // Editando um hóspede existente
           this.updateHospede(hospedeData)
@@ -222,5 +236,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
