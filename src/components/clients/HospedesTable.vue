@@ -29,22 +29,44 @@
         <!-- Tabela de Hóspedes -->
         <v-data-table
           :headers="headers"
-          :items="hospedes"
+          :items="filteredHospedes"
           :loading="loading"
           class="elevation-1"
           mobile-breakpoint="500"
           dense
+          item-key="id"
         >
           <template v-slot:item="{ item }">
             <tr>
+              <td>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                      :color="getStatus(item) ? 'green' : 'grey'"
+                      v-bind="attrs"
+                      v-on="on"
+                      class="d-flex align-center justify-center"
+                    >
+                      {{
+                        getStatus(item)
+                          ? "mdi-account-check"
+                          : "mdi-account-cancel"
+                      }}
+                    </v-icon>
+                  </template>
+                  <span>{{
+                    getStatus(item) ? "Hospedado" : "Não Hospedado"
+                  }}</span>
+                </v-tooltip>
+              </td>
               <td>{{ item.id }}</td>
               <td>{{ item.nome }}</td>
               <td class="d-none d-md-table-cell">{{ item.cpfOuCnpj }}</td>
               <td class="d-none d-md-table-cell">{{ item.email }}</td>
               <td class="d-none d-md-table-cell">{{ item.telefone }}</td>
+              <td class="d-none d-md-table-cell">{{ item.localHospedagem }}</td>
               <td>{{ item.dataCheckIn | formatDate }}</td>
               <td>{{ item.dataCheckOut | formatDate }}</td>
-
               <td>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
@@ -122,11 +144,13 @@ export default {
       selectedHospede: null,
       loading: false,
       headers: [
+        { text: "Status", value: "status", sortable: false },
         { text: "ID", value: "id" },
         { text: "Nome", value: "nome" },
         { text: "CPF/CNPJ", value: "cpfOuCnpj" },
         { text: "Email", value: "email" },
         { text: "Telefone", value: "telefone" },
+        { text: "Local", value: "localHospedagem" },
         { text: "Check-in", value: "dataCheckIn" },
         { text: "Check-out", value: "dataCheckOut" },
         { text: "Ações", value: "actions" },
@@ -135,6 +159,10 @@ export default {
   },
   computed: {
     ...mapState(["hospedes"]),
+    filteredHospedes() {
+      // Retorna todos os hóspedes sem filtro de status
+      return this.hospedes;
+    },
   },
   methods: {
     ...mapActions([
@@ -143,6 +171,15 @@ export default {
       "createHospede",
       "updateHospede",
     ]),
+    // Função para determinar o status do hóspede
+    getStatus(item) {
+      const today = new Date().toISOString().substr(0, 10);
+      if (item.dataCheckIn <= today && item.dataCheckOut >= today) {
+        return true; // Hóspede está no flat
+      } else {
+        return false; // Hóspede não está no flat
+      }
+    },
     openNewHospedeDialog() {
       this.$refs.hospedeManager.openDialog();
     },
@@ -182,46 +219,7 @@ export default {
           });
       }
     },
-
-    // Função para salvar o hóspede
-    salvarHospede() {
-      if (this.$refs.hospedeManager.$refs.form.validate()) {
-        const hospedeData = { ...this.$refs.hospedeManager.hospede };
-
-        hospedeData.dataCheckIn = new Date(hospedeData.dataCheckIn)
-          .toISOString()
-          .substr(0, 10);
-        hospedeData.dataCheckOut = new Date(hospedeData.dataCheckOut)
-          .toISOString()
-          .substr(0, 10);
-
-        // Atribuir ID se necessário
-        if (!hospedeData.id) {
-          hospedeData.id = Date.now();
-        }
-
-        if (this.$refs.hospedeManager.editMode) {
-          this.updateHospede(hospedeData)
-            .then(() => {
-              this.$refs.hospedeManager.closeDialog();
-            })
-            .catch((error) => {
-              console.error("Erro ao atualizar o hóspede:", error);
-            });
-        } else {
-          // Criando um novo hóspede
-          this.createHospede(hospedeData)
-            .then(() => {
-              this.$refs.hospedeManager.closeDialog();
-            })
-            .catch((error) => {
-              console.error("Erro ao criar o hóspede:", error);
-            });
-        }
-      }
-    },
   },
-
   filters: {
     formatDate(value) {
       if (value) {
@@ -236,3 +234,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Estilos personalizados podem ser adicionados aqui */
+</style>

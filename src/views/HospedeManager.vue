@@ -12,13 +12,6 @@
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
-            v-model="hospede.id"
-            :rules="idRules"
-            label="ID"
-            required
-            disabled
-          ></v-text-field>
-          <v-text-field
             v-model="hospede.nome"
             :rules="nameRules"
             label="Nome"
@@ -42,6 +35,14 @@
             label="Telefone"
             required
           ></v-text-field>
+          <v-select
+            v-model="hospede.localHospedagem"
+            :rules="localHospedagemRules"
+            :items="locaisHospedagem"
+            label="Local da Hospedagem"
+            required
+          ></v-select>
+
           <v-text-field
             v-model="hospede.dataCheckIn"
             label="Data de Check-in"
@@ -77,6 +78,7 @@ export default {
       dialog: false,
       valid: false,
       editMode: false,
+      locaisHospedagem: ["Ipanema", "Leblon", "Casa Cubo"],
       hospede: this.getDefaultHospede(),
       idRules: [
         (v) =>
@@ -104,6 +106,7 @@ export default {
           (v && v.length >= 8 && v.length <= 15) ||
           "Telefone deve ter entre 8 e 15 caracteres",
       ],
+      localHospedagemRules: [(v) => !!v || "Local da Hospedagem é obrigatório"],
     };
   },
   methods: {
@@ -149,6 +152,7 @@ export default {
         cpfOuCnpj: "",
         email: "",
         telefone: "",
+        localHospedagem: "",
         checkStatus: "Check-in",
         dataCadastro: new Date().toISOString().substr(0, 10),
         dataCheckIn: new Date().toISOString().substr(0, 10),
