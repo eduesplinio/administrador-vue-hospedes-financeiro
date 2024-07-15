@@ -7,13 +7,49 @@
       </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
-          <v-text-field v-model="hospede.nome" :rules="nameRules" label="Nome" required></v-text-field>
-          <v-text-field v-model="hospede.cpf" :rules="cpfCnpjRules" label="CPF" required></v-text-field>
-          <v-text-field v-model="hospede.email" :rules="emailRules" label="Email" required></v-text-field>
-          <v-text-field v-model="hospede.telefone" :rules="telefoneRules" label="Telefone" required></v-text-field>
-          <v-text-field v-model="hospede.dataEntrada" label="Data de Entrada" type="date" required></v-text-field>
-          <v-text-field v-model="hospede.dataSaida" label="Data de Saída" type="date" required></v-text-field>
-          <v-text-field v-model="hospede.flatId" label="Flat ID" required></v-text-field>
+          <v-text-field
+            v-model="hospede.id"
+            :rules="idRules"
+            label="ID"
+            required
+            disabled
+          ></v-text-field>
+          <v-text-field
+            v-model="hospede.nome"
+            :rules="nameRules"
+            label="Nome"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="hospede.cpfOuCnpj"
+            :rules="cpfCnpjRules"
+            label="CPF/CNPJ"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="hospede.email"
+            :rules="emailRules"
+            label="Email"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="hospede.telefone"
+            :rules="telefoneRules"
+            label="Telefone"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="hospede.dataCheckIn"
+            label="Data de Check-in"
+            type="date"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="hospede.dataCheckOut"
+            label="Data de Check-out"
+            type="date"
+            required
+          ></v-text-field>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -38,6 +74,7 @@ export default {
       dialog: false,
       valid: false,
       editMode: false,
+      locaisHospedagem: ["Ipanema", "Leblon", "Casa Cubo"],
       hospede: this.getDefaultHospede(),
       nameRules: [
         (v) => !!v || "Nome é obrigatório",
@@ -50,6 +87,7 @@ export default {
         (v) => !!v || "Telefone é obrigatório",
         (v) => (v && v.length >= 8 && v.length <= 15) || "Telefone deve ter entre 8 e 15 caracteres",
       ],
+      localHospedagemRules: [(v) => !!v || "Local da Hospedagem é obrigatório"],
     };
   },
   methods: {
@@ -92,9 +130,10 @@ export default {
         cpf: "",
         email: "",
         telefone: "",
-        dataEntrada: "",
-        dataSaida: "",
-        flatId: "",
+        checkStatus: "Check-in",
+        dataCadastro: new Date().toISOString().substr(0, 10),
+        dataCheckIn: new Date().toISOString().substr(0, 10),
+        dataCheckOut: "",
       };
     },
     ...mapActions(["fetchHospedes"]), // Mapeia a action fetchHospedes do Vuex para usar no componente
