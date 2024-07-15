@@ -8,20 +8,13 @@
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
-            v-model="hospede.id"
-            :rules="idRules"
-            label="ID"
-            required
-            disabled
-          ></v-text-field>
-          <v-text-field
             v-model="hospede.nome"
             :rules="nameRules"
             label="Nome"
             required
           ></v-text-field>
           <v-text-field
-            v-model="hospede.cpfOuCnpj"
+            v-model="hospede.cpf"
             :rules="cpfCnpjRules"
             label="CPF/CNPJ"
             required
@@ -39,13 +32,13 @@
             required
           ></v-text-field>
           <v-text-field
-            v-model="hospede.dataCheckIn"
+            v-model="hospede.dataEntrada"
             label="Data de Check-in"
             type="date"
             required
           ></v-text-field>
           <v-text-field
-            v-model="hospede.dataCheckOut"
+            v-model="hospede.dataSaida"
             label="Data de Check-out"
             type="date"
             required
