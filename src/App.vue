@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       drawer: true,
-      darkTheme: false,
+      darkTheme: true,
       dialog: false,
       snackbar: false,
       titulo: "",

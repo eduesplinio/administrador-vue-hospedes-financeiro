@@ -7,16 +7,16 @@
         rounded-lg
       >
         <div class="image-container">
-          <img src="logo_nome.svg" style="width: 250px" />
+          <img src="" style="width: 250px" />
         </div>
         <v-card-text>
           <v-form ref="form">
             <v-text-field
-              label="E-mail"
-              prepend-icon="mdi-email"
-              type="email"
-              v-model="email"
-              :rules="emailRules"
+              label="Usuário"
+              prepend-icon="mdi-account"
+              type="text"
+              v-model="username"
+              :rules="usernameRules"
               @input="clearErrorMessage"
               required
             ></v-text-field>
@@ -51,16 +51,16 @@
 </template>
 
 <script>
-import api from "@/services/api/api.js"; // Assume que 'api' é uma instância configurada do Axios
+import api from "@/services/api/api.js";
 
 export default {
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
       errorMessage: "",
       valid: false,
-      emailRules: [(v) => !!v || "E-mail é obrigatório"],
+      usernameRules: [(v) => !!v || "Usuário é obrigatório"],
       passwordRules: [(v) => !!v || "Senha é obrigatória"],
     };
   },
@@ -72,7 +72,7 @@ export default {
       }
     },
     loginUser() {
-      const credentials = { username: this.email, password: this.password };
+      const credentials = { username: this.username, password: this.password };
       api
         .post("/api/authenticate", credentials)
         .then((response) => {
@@ -100,10 +100,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("/public/background.svg");
+  background-image: url("");
   background-size: cover;
   background-position: center;
-  background-color: #165091;
   min-height: 100vh;
   background-repeat: no-repeat;
 }
@@ -118,7 +117,6 @@ export default {
 @media (max-width: 1000px) {
   .login-background {
     background-image: none;
-    /* Remove a imagem de fundo quando a tela é menor que 1000px */
   }
 }
 </style>
