@@ -100,7 +100,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("");
   background-size: cover;
   background-position: center;
   min-height: 100vh;

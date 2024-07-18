@@ -1,33 +1,103 @@
+import api from '@/services/api/api.js';
+import axios from 'axios';
+
 export default {
-  loginUser({ commit }) {
-    const token = "dummyToken"; // Token fictício para simular login
-    const user = { id: 1, name: "Usuário Demo" }; // Usuário fictício
-    localStorage.setItem("userToken", token);
-    commit("SET_TOKEN", token);
-    commit("SET_USER", user);
+  loginUser({ commit }, credentials) {
+    return new Promise((resolve, reject) => {
+      api.post('/login', credentials)
+        .then(response => {
+          const token = response.data.token;
+          const user = response.data.user;
+          localStorage.setItem('userToken', token);
+          commit('SET_TOKEN', token);
+          commit('SET_USER', user);
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   },
 
   logoutUser({ commit }) {
-    localStorage.removeItem("userToken");
-    commit("CLEAR_USER_DATA");
+    return new Promise((resolve, reject) => {
+      api.delete('/logout', {
+        headers: {
+          'Authorization': localStorage.getItem('userToken')
+        }
+      })
+        .then(response => {
+          localStorage.removeItem('userToken');
+          localStorage.removeItem('userInfo');
+          commit('CLEAR_USER_DATA');
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   },
 
   fetchHospedes({ commit }) {
-    const hospedesSalvos = localStorage.getItem("hospedes");
-    if (hospedesSalvos) {
-      commit("SET_HOSPEDES", JSON.parse(hospedesSalvos));
-    }
+    return axios.get('http://localhost:8080/api/hospedes/listar', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+      }
+    })
+      .then(response => {
+        commit('SET_HOSPEDES', response.data);
+      })
+      .catch(error => {
+        console.error('Erro ao buscar hóspedes:', error);
+        throw error;
+      });
   },
 
-  createHospede({ commit }, novoHospede) {
-    commit("ADD_HOSPEDE", novoHospede);
+
+  createHospede({ commit }, hospedeData) {
+    return axios.post('http://localhost:8080/hospedes', hospedeData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+      }
+    })
+      .then(response => {
+        commit('ADD_HOSPEDE', response.data);
+      })
+      .catch(error => {
+        console.error('Erro ao criar hóspede:', error);
+      });
   },
 
-  updateHospede({ commit }, updatedHospede) {
-    commit("UPDATE_HOSPEDE", updatedHospede);
+  updateHospede({ commit }, hospedeData) {
+    return axios.put(`http://localhost:8080/api/hospedes/${hospedeData.id}`, hospedeData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+      }
+    })
+      .then(response => {
+        commit('UPDATE_HOSPEDE', response.data);
+      })
+      .catch(error => {
+        console.error('Erro ao atualizar hóspede:', error);
+        throw error; // Propaga o erro para lidar com ele no componente Vue.js
+      });
   },
+
 
   deleteHospede({ commit }, hospedeId) {
-    commit("DELETE_HOSPEDE", hospedeId);
-  },
+    return axios.delete(`http://localhost:8080/api/hospedes/${hospedeId}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+      }
+    })
+      .then(() => {
+        commit('DELETE_HOSPEDE', hospedeId); // Remove localmente após sucesso no backend
+      })
+      .catch(error => {
+        console.error('Erro ao deletar hóspede:', error);
+        throw error; // Propaga o erro para lidar com ele no componente Vue.js
+      });
+  }
 };
